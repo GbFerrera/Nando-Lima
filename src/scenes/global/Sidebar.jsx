@@ -12,6 +12,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -75,14 +76,14 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                 <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
-                  width="170px"
-                  src={`../../assets/image.png`}
-                  style={{ cursor: "pointer" }}
-                />
-              </Box>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <img
+                    alt="profile-user"
+                    width="170px"
+                    src={`../../assets/image.png`}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Box>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
                 </IconButton>
@@ -92,7 +93,6 @@ const Sidebar = () => {
 
           {!isCollapsed && (
             <Box mb="35px">
-              
               <Box textAlign="center">
                 <Typography
                   variant="h5"
@@ -102,9 +102,10 @@ const Sidebar = () => {
                 >
                   Barber shop
                 </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  
-                </Typography>
+                <Typography
+                  variant="h5"
+                  color={colors.greenAccent[500]}
+                ></Typography>
               </Box>
             </Box>
           )}
@@ -123,7 +124,7 @@ const Sidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Data
+              Dados
             </Typography>
             <Item
               title="Equipe"
@@ -139,6 +140,15 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+
+            <Item
+              title="Planos"
+              to="/planos" // Altere o caminho conforme necessário
+              icon={<PaidOutlinedIcon />} // Você pode usar um ícone relacionado a planos ou pagamento
+              selected={selected}
+              setSelected={setSelected}
+            />
+
             <Item
               title="Faturas"
               to="/invoices"
@@ -152,7 +162,7 @@ const Sidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
-              Pages
+              Páginas
             </Typography>
             <Item
               title="Profile Form"
@@ -162,12 +172,13 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Calendar"
+              title="Calendario"
               to="/calendar"
               icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
+
             <Item
               title="FAQ Page"
               to="/faq"
@@ -175,17 +186,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              
-            </Typography>
-           
-           
-           
           </Box>
         </Menu>
       </ProSidebar>
