@@ -13,6 +13,11 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
+import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
+import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined"; // Importação do ícone de loja
+import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined"; // Importação do ícone de serviços
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -69,6 +74,8 @@ const Sidebar = () => {
               color: colors.grey[100],
             }}
           >
+
+            
             {!isCollapsed && (
               <Box
                 display="flex"
@@ -92,15 +99,25 @@ const Sidebar = () => {
           </MenuItem>
 
           {!isCollapsed && (
+
+            
             <Box mb="35px">
               <Box textAlign="center">
+              <img
+                  alt="profile-user"
+                  width="100px"
+                  height="100px"
+                  src={`../../../IMG_A4049C89D017-1.jpeg`}
+                  style={{ cursor: "pointer", borderRadius: "50%" }}
+                />
                 <Typography
                   variant="h5"
                   color={colors.grey[100]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Barber shop
+                  
+                  Fernando Lima
                 </Typography>
                 <Typography
                   variant="h5"
@@ -133,6 +150,15 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+
+            <Item
+              title="Calendário"
+              to="/calendar"
+              icon={<CalendarTodayOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
             <Item
               title="Clientes"
               to="/contacts"
@@ -142,9 +168,9 @@ const Sidebar = () => {
             />
 
             <Item
-              title="Planos"
-              to="/planos" // Altere o caminho conforme necessário
-              icon={<PaidOutlinedIcon />} // Você pode usar um ícone relacionado a planos ou pagamento
+              title="Financeiro"
+              to="/financial"
+              icon={<AccountBalanceOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -164,23 +190,49 @@ const Sidebar = () => {
             >
               Páginas
             </Typography>
+
             <Item
-              title="Profile Form"
-              to="/form"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Calendario"
-              to="/calendar"
-              icon={<CalendarTodayOutlinedIcon />}
+              title="Planos"
+              to="/plans" // Altere o caminho conforme necessário
+              icon={<PaidOutlinedIcon />} // Você pode usar um ícone relacionado a planos ou pagamento
               selected={selected}
               setSelected={setSelected}
             />
 
             <Item
-              title="FAQ Page"
+              title="Serviços"
+              to="/servicos"
+              icon={<WorkspacePremiumOutlinedIcon />} // Ícone para Serviços
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            <Item
+              title="Despesas"
+              to="/despesas"
+              icon={<AttachMoneyOutlinedIcon />} // Ícone para Despesas
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            <Item
+              title="Produtos"
+              to="/produtos"
+              icon={<StorefrontOutlinedIcon />} // Ícone para Produtos
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            <Item
+              title="Configurações"
+              to="/config"
+              icon={<SettingsOutlinedIcon />} // Ícone para Configurações
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            <Item
+              title="FAQ e Cursos"
               to="/faq"
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}

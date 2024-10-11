@@ -10,7 +10,10 @@ import {
   FormControl,
   Grid,
   Card,
-  CardContent
+  CardContent,
+  DialogContent,
+  DialogTitle,
+  Dialog
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -42,7 +45,6 @@ const AdminPlansPage = () => {
     description: "",
   });
   const [customPlan, setCustomPlan] = useState([]);
-  const [selectedPlan, setSelectedPlan] = useState("");
   const [selectedService, setSelectedService] = useState("");
   const [serviceQuantity, setServiceQuantity] = useState(1);
   const [isCustom, setIsCustom] = useState(false);
@@ -53,6 +55,8 @@ const AdminPlansPage = () => {
   });
   const [paymentMethod, setPaymentMethod] = useState("");
   const [step, setStep] = useState(1); // Step state: 1 for plan creation, 2 for order details
+  const [open, setOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState("");
 
   const handleCreatePlan = () => {
     setPlans((prevPlans) => [
@@ -107,6 +111,7 @@ const AdminPlansPage = () => {
       services: customPlan,
     };
 
+    // Lógica de envio do pedido aqui
   };
 
   const handleAdvance = () => {
@@ -115,6 +120,23 @@ const AdminPlansPage = () => {
 
   const handleBack = () => {
     setStep(1); // Go back to plan selection step
+  };
+
+  const handleCreateNewPlan = () => {
+    // Lógica para criar um novo plano
+    const newPlan = { id: plans.length + 1, name: '', price: '' };
+    setSelectedPlan(newPlan);
+    setOpen(true);
+  };
+
+  const handleOpenDialog = (plan) => {
+    setSelectedPlan(plan);
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+    setSelectedPlan(null);
   };
 
   const columns = [
@@ -142,30 +164,69 @@ const AdminPlansPage = () => {
         backgroundColor: "transparent",
         overflow: "auto",
         maxHeight: "100vh",
+        overflowY: "auto",
       }}
     >
-       <Box p={3} style={{ backgroundColor: 'transparent', overflow: 'auto' }}>
-      <Typography variant="h5" gutterBottom>
-        Planos Bases
-      </Typography>
+      <Box p={3} style={{ backgroundColor: 'transparent', overflow: 'auto' }}>
+        <Typography variant="h5" gutterBottom>
+          Planos Bases
+        </Typography>
 
-      <Grid container spacing={2}>
-        {plans.map((plan) => (
-          <Grid item xs={12} sm={6} md={4} key={plan.id}>
-            <Card variant="outlined">
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  {plan.name}
-                </Typography>
-                <Typography variant="body1">
-                  Preço: {plan.price}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+        <Button variant="contained" color="primary" onClick={handleCreateNewPlan}>
+          Criar Novo Plano
+        </Button>
+
+        <Grid container spacing={2} mt={2}>
+          {plans.map((plan) => (
+            <Grid item xs={12} sm={6} md={4} key={plan.id}>
+              <Card variant="outlined" onClick={() => handleOpenDialog(plan)} style={{ cursor: 'pointer' }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    {plan.name}
+                  </Typography>
+                  <Typography variant="body1">
+                    Preço: {plan.price}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
+        {/* Modal de Edição */}
+        {selectedPlan && (
+          <Dialog open={open} onClose={handleCloseDialog}>
+            <DialogTitle>{selectedPlan.id ? 'Editar Plano' : 'Criar Novo Plano'}</DialogTitle>
+            <DialogContent>
+              <TextField
+                label="Nome do Plano"
+                value={selectedPlan.name}
+                onChange={(e) => setSelectedPlan({ ...selectedPlan, name: e.target.value })}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Preço"
+                value={selectedPlan.price}
+                onChange={(e) => setSelectedPlan({ ...selectedPlan, price: e.target.value })}
+                fullWidth
+                margin="normal"
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  // Lógica para salvar as alterações do plano
+                  handleCloseDialog();
+                }}
+                style={{ marginTop: '16px' }}
+              >
+                Salvar
+              </Button>
+            </DialogContent>
+          </Dialog>
+        )}
+      </Box>
       {step === 1 && (
         <>
           <Box mb={4} p={2} style={{ borderRadius: 8 }}>
@@ -173,7 +234,6 @@ const AdminPlansPage = () => {
               Selecione um Plano Base ou Crie um Customizado
             </Typography>
 
-            
             <FormControl fullWidth margin="normal">
               <InputLabel>Planos</InputLabel>
               <Select value={selectedPlan} onChange={handleSelectPlan}>
@@ -223,70 +283,71 @@ const AdminPlansPage = () => {
                   </Button>
                 </Box>
               </Grid>
-
-              {/* Tabela de serviços adicionados ao plano customizado */}
               <Grid item xs={12} md={6}>
-                {customPlan.length > 0 && (
-                  <Box p={2} style={{ borderRadius: 8 }}>
-                    <Typography variant="h5" gutterBottom>
-                      Serviços Selecionados
-                    </Typography>
-                    <div style={{ height: 400, width: "100%" }}>
-                      <DataGrid rows={customPlan} columns={customPlanColumns} pageSize={5} />
-                    </div>
-                  </Box>
-                )}
+                <Typography variant="h6">Plano Customizado</Typography>
+                <DataGrid
+                  rows={customPlan}
+                  columns={customPlanColumns}
+                  autoHeight
+                  disableSelectionOnClick
+                  pageSize={5}
+                  getRowId={(row) => row.id}
+                />
               </Grid>
             </Grid>
           )}
-
-          {/* Button to advance to the next step */}
-          <Box>
-            <Button variant="contained" color="primary" onClick={handleAdvance} disabled={!customPlan.length && isCustom}>
-              Avançar
-            </Button>
-          </Box>
+          <Button variant="contained" color="primary" onClick={handleAdvance}>
+            Prosseguir para Detalhes do Pedido
+          </Button>
         </>
       )}
 
-      {/* Step 2: Customer details and payment section */}
       {step === 2 && (
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Box mb={4} p={2} style={{ borderRadius: 8 }}>
-              <Typography variant="h5" gutterBottom>
-                Detalhes do Cliente e Pagamento
-              </Typography>
+        <Box mt={4}>
+          <Typography variant="h5" gutterBottom>
+            Detalhes do Cliente
+          </Typography>
+
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
               <TextField
                 label="Nome do Cliente"
-                variant="outlined"
-                name="name"
                 fullWidth
+                name="name"
                 value={customerDetails.name}
                 onChange={handleCustomerChange}
                 margin="normal"
               />
+            </Grid>
+            <Grid item xs={12} md={6}>
               <TextField
-                label="Email do Cliente"
-                variant="outlined"
-                name="email"
+                label="Email"
                 fullWidth
+                name="email"
                 value={customerDetails.email}
                 onChange={handleCustomerChange}
                 margin="normal"
               />
+            </Grid>
+            <Grid item xs={12} md={6}>
               <TextField
-                label="Telefone do Cliente"
-                variant="outlined"
-                name="phone"
+                label="Telefone"
                 fullWidth
+                name="phone"
                 value={customerDetails.phone}
                 onChange={handleCustomerChange}
                 margin="normal"
               />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
               <FormControl fullWidth margin="normal">
-                <InputLabel>Método de Pagamento</InputLabel>
-                <Select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+                <InputLabel>Forma de Pagamento</InputLabel>
+                <Select
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  label="Forma de Pagamento"
+                >
                   {paymentMethods.map((method) => (
                     <MenuItem key={method.id} value={method.name}>
                       {method.name}
@@ -294,41 +355,38 @@ const AdminPlansPage = () => {
                   ))}
                 </Select>
               </FormControl>
-              <Box mt={2}>
-                <Button variant="contained" color="primary" onClick={handleSubmitOrder}>
-                  Finalizar Pedido
-                </Button>
-                <Button variant="outlined" color="secondary" onClick={handleBack}>
-                  Voltar
-                </Button>
-              </Box>
-            </Box>
+            </Grid>
           </Grid>
 
-          {/* Exibir Resumo do Pedido à direita */}
-          <Grid item xs={12} md={6}>
-            <Box mb={4} p={2} style={{ borderRadius: 8 }}>
-              <Typography variant="h5" gutterBottom>
-                Resumo do Pedido
-              </Typography>
+          <Typography variant="h5" gutterBottom>
+            Resumo do Pedido
+          </Typography>
+
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
               <Typography variant="body1">
                 Plano Selecionado: {selectedPlan === "custom" ? "Plano Customizado" : selectedPlan}
               </Typography>
+            </Grid>
+            <Grid item xs={12}>
               <Typography variant="body1">
-                Método de Pagamento: {paymentMethod}
+                Serviços:
               </Typography>
-              <Typography variant="body1">Serviços:</Typography>
               {customPlan.map((service) => (
                 <Typography key={service.id} variant="body2">
-                  {service.name} - R$ {service.price} x {service.quantity} = R$ {service.price * service.quantity}
+                  {service.name} - {service.quantity} sessão(ões) - R$ {service.price * service.quantity}
                 </Typography>
               ))}
-              <Typography variant="h6" mt={2}>
-                Total: R$ {customPlan.reduce((total, service) => total + service.price * service.quantity, 0)}
-              </Typography>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
+
+          <Button variant="contained" color="primary" onClick={handleSubmitOrder} style={{ marginTop: "16px" }}>
+            Finalizar Pedido
+          </Button>
+          <Button variant="text" color="secondary" onClick={handleBack} style={{ marginTop: "16px", marginLeft: "16px" }}>
+            Voltar
+          </Button>
+        </Box>
       )}
     </Box>
   );

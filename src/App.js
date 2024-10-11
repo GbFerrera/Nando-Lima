@@ -13,6 +13,8 @@ import AdminPlansPage from "./scenes/plans";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
+import FinanceDashboard from "./scenes/financial";
+import Settings from "./scenes/config";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -34,8 +36,10 @@ function App() {
               <Route path="/form" element={<Form />} />
               <Route path="/bar" element={<Bar />} />
               <Route path="/faq" element={<FAQ />} />
-              <Route path="/planos" element={<AdminPlansPage />} />
+              <Route path="/plans" element={<AdminPlansPage />} />
               <Route path="/calendar" element={<Calendar />} />
+              <Route path="/financial" element={<FinanceDashboard />} />
+              <Route path="/config" element={<Settings />} />
             </Routes>
           </main>
         </div>
