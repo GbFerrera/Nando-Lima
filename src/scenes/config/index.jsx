@@ -6,7 +6,7 @@ const Settings = () => {
   const [banks, setBanks] = useState([]);
   const [isAssasEnabled, setIsAssasEnabled] = useState(false);
   const [token, setToken] = useState('');
-  const [originalToken, setOriginalToken] = useState(''); // Estado para armazenar o token original
+  const [originalToken, setOriginalToken] = useState(''); 
 
   useEffect(() => {
     const fetchBankDetails = async () => {
@@ -44,7 +44,7 @@ const Settings = () => {
     }
   };
 
-  const isTokenChanged = token !== originalToken; // Verifica se o token foi alterado
+  const isTokenChanged = token !== originalToken; 
 
   return (
     <div style={{ padding: 20 }}>
@@ -78,13 +78,13 @@ const Settings = () => {
             variant="outlined"
             fullWidth
             value={token}
-            onChange={(e) => setToken(e.target.value)} // Atualiza o estado do token
+            onChange={(e) => setToken(e.target.value)} 
             style={{ marginBottom: 20 }}
           />
         </Paper>
       )}
 
-      {/* Botão de salvar alterações só aparece se o token foi alterado */}
+      
       {isTokenChanged && (
         <Button variant="contained" color="primary" onClick={handleSave}>
           Salvar Alterações

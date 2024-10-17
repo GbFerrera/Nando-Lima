@@ -125,8 +125,8 @@ const Contacts = () => {
         title="CLIENTES"
         subtitle="Gerencie ou adicione clientes"
       />
-      <Box display="flex" justifyContent="flex-end" m="20px 0">
-        <Button variant="contained" color="primary" onClick={handleOpenModal}>
+      <Box display="flex" justifyContent="flex-end" m="10px 0">
+        <Button size="large" variant="contained" sx={{ backgroundColor: colors.greenAccent[600], color: 'white' }} onClick={handleOpenModal}>
           Novo Cliente
         </Button>
       </Box>
@@ -164,13 +164,13 @@ const Contacts = () => {
         }}
       >
         <DataGrid
-          rows={transformedContacts} // Usar os contatos transformados
+          rows={transformedContacts} 
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
       </Box>
 
-      {/* Modal para adicionar novo cliente */}
+   
       <Dialog open={openModal} onClose={handleCloseModal}>
         <DialogTitle>Adicionar Novo Cliente</DialogTitle>
         <DialogContent>
