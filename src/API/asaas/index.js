@@ -27,7 +27,27 @@ class ApiClient {
 }
 
 
+class ApiSubscriptionsAssas {
+
+  async fetchSubscriptions() {
+    try {
+      const response = await api.get('/asaas/subscriptions');
+      if (response.data && response.data.data.length > 0) {
+        return response.data.data; // Retorna apenas a lista de assinaturas
+      } else {
+        console.log('Nenhuma assinatura encontrada');
+        return []; // Array vazio se não houver assinaturas
+      }
+    } catch (error) {
+      console.error('Erro ao buscar assinaturas no servidor:', error.response?.data || error.message);
+      return [];
+    }
+  }
+
+}
+
+const apiSubscriptionsAssasInstance = new ApiSubscriptionsAssas()
 const apiClientInstance = new ApiClient();
 
 
-export { apiClientInstance };
+export { apiClientInstance,apiSubscriptionsAssasInstance };

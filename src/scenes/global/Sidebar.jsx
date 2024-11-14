@@ -176,7 +176,7 @@ const Sidebar = () => {
             />
 
             <Item
-              title="Faturas"
+              title="Assinaturas"
               to="/invoices"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
